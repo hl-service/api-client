@@ -9,9 +9,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - env:
-          VUE_APP_API_URL: ${{ secrets.API_URL }}
-          
       - name: Checkout Repo
         uses: actions/checkout@master
         
@@ -20,6 +17,8 @@ jobs:
         
       - name: Build
         run: npm run build
+        env:
+          VUE_APP_API_URL: ${{ secrets.API_URL }}
         
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
