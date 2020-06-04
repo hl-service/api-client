@@ -17,7 +17,10 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'home' }">
+                        <router-link
+                            class="nav-link"
+                            :to="{ name: 'entries.create' }"
+                        >
                             Главная
                         </router-link>
                     </li>
@@ -25,9 +28,9 @@
                     <li class="nav-item">
                         <router-link
                             class="nav-link"
-                            :to="{ name: 'articles.create' }"
+                            :to="{ name: 'entries.index' }"
                         >
-                            Добавить статью
+                            История запросов
                         </router-link>
                     </li>
                 </ul>

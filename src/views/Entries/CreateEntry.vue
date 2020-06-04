@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header mb-4">
-            <h2>Добавить статью</h2>
+            <h2>Запросить анализ тональности текста</h2>
         </div>
 
         <div
@@ -23,29 +23,32 @@
 
         <div>
             <div class="form-group">
-                <label for="title">Заголовок статьи</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    v-model="title"
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="description">Содержимое</label>
+                <label for="text">Текст</label>
 
                 <textarea
-                    id="description"
-                    rows="10"
+                    id="text"
+                    rows="5"
                     class="form-control"
-                    v-model="description"
+                    v-model="text"
                 ></textarea>
             </div>
 
             <button @click="onCreate" class="btn btn-primary">
-                Добавить
+                Отправить
             </button>
+        </div>
+
+        <div v-if="output">
+            <div class="header mt-4 mb-4">
+                <h2>Результат</h2>
+            </div>
+
+            <EntryCard
+                class="mt-2"
+                v-if="output"
+                :text="output.text"
+                :result="output.result"
+            />
         </div>
     </div>
 </template>
@@ -53,32 +56,34 @@
 <script>
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import EntryCard from '@/components/EntryCard.vue'
 
 export default {
+    components: {
+        EntryCard,
+    },
+
     data() {
         return {
-            title: '',
-            description: '',
+            text: '',
             errorMessage: '',
+            output: null,
         }
     },
 
     methods: {
         onCreate() {
+            this.output = null
+
             axios
-                .post('/articles', {
-                    title: this.title,
-                    description: this.description,
+                .post('/entries', {
+                    text: this.text,
                 })
                 .then(response => {
                     this.showSuccessMessage()
 
-                    this.$router.push({
-                        name: 'articles.show',
-                        params: {
-                            id: response.data.data._id,
-                        },
-                    })
+                    // Render output card
+                    this.output = response.data.data
                 })
                 .catch(error => {
                     this.errorMessage = error.response
@@ -89,7 +94,7 @@ export default {
 
         showSuccessMessage() {
             Swal.fire({
-                title: 'Статья успешно создана!',
+                title: 'Запрос успешно отправлен!',
                 icon: 'success',
                 position: 'top-end',
                 toast: true,

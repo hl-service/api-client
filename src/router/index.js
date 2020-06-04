@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NotFound from '../views/Errors/NotFound.vue'
-import Home from '../views/Home.vue'
-import CreateArticle from '../views/Articles/CreateArticle.vue'
-import ArticleCard from '../views/Articles/ArticleCard.vue'
-import EditArticle from '../views/Articles/EditArticle.vue'
+import EntriesList from '../views/Entries/EntriesList.vue'
+import EntryCreate from '../views/Entries/CreateEntry.vue'
 
 Vue.use(VueRouter)
 
@@ -15,24 +13,14 @@ const routes = [
         component: NotFound,
     },
     {
+        path: '/entries',
+        name: 'entries.index',
+        component: EntriesList,
+    },
+    {
         path: '/',
-        name: 'home',
-        component: Home,
-    },
-    {
-        path: '/articles/create',
-        name: 'articles.create',
-        component: CreateArticle,
-    },
-    {
-        path: '/articles/:id',
-        name: 'articles.show',
-        component: ArticleCard,
-    },
-    {
-        path: '/articles/:id/edit',
-        name: 'articles.edit',
-        component: EditArticle,
+        name: 'entries.create',
+        component: EntryCreate,
     },
 ]
 

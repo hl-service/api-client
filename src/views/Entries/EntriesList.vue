@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header mb-4">
-            <h2>Список статей</h2>
+            <h2>История запросов</h2>
         </div>
 
         <div
@@ -22,27 +22,8 @@
         </div>
 
         <div class="row row-cols-1">
-            <div
-                v-for="article in articles"
-                :key="article._id"
-                class="col mb-4"
-            >
-                <div class="card">
-                    <div class="card-body">
-                        <router-link
-                            class="h5 card-title"
-                            :to="{
-                                name: 'articles.show',
-                                params: { id: article._id },
-                            }"
-                        >
-                            {{ article.title }}
-                        </router-link>
-                        <p class="card-text mt-2">
-                            {{ article.description }}
-                        </p>
-                    </div>
-                </div>
+            <div v-for="entry in entries" :key="entry._id" class="col mb-4">
+                <EntryCard :text="entry.text" :result="entry.result" />
             </div>
         </div>
     </div>
@@ -50,26 +31,27 @@
 
 <script>
 import axios from 'axios'
+import EntryCard from '@/components/EntryCard.vue'
 
 export default {
     name: 'Home',
 
+    components: {
+        EntryCard,
+    },
+
     data() {
         return {
-            articles: [],
+            entries: [],
             errorMessage: '',
         }
     },
 
     created() {
         axios
-            .get('/articles')
+            .get('/entries')
             .then(response => {
-                this.articles = response.data.data
-
-                if (response.data.data.success) {
-                    alert('success')
-                }
+                this.entries = response.data.data
             })
             .catch(error => {
                 this.errorMessage = error.response
